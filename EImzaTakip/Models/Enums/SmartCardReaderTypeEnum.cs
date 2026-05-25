@@ -6,7 +6,7 @@ namespace EImzaTakip.Models.Enums
     {
         [Display(Name = "Mini okuyucu")]
         MiniOkuyucu = 1,
-        [Display(Name = "Masaüstü Okuyuc")]
+        [Display(Name = "Masaüstü Okuyucu")]
         MasautuOkuyucu = 2,
         [Display(Name = "İstenmiyor")]
         Istenmiyor = 3,

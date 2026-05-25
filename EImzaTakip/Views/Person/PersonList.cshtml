@@ -1,0 +1,267 @@
+﻿@model List<Person>
+
+@{
+    ViewData["Title"] = "Kişiler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Css {
+
+    <link href="~/tema/vendor/datatables/dataTables.bootstrap4.min.css"
+          rel="stylesheet" />
+}
+
+<div class="container-fluid">
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success autoHideAlert">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger autoHideAlert">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+        <h1 class="h3 mb-0 text-gray-800">
+            Kişi Listesi
+        </h1>
+
+        <a asp-controller="Person"
+           asp-action="PersonCreate"
+           class="btn btn-primary">
+
+            Yeni Kişi
+
+        </a>
+
+    </div>
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header py-3">
+
+            <h6 class="m-0 font-weight-bold text-primary">
+                Kişiler
+            </h6>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered"
+                       id="dataTable">
+
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Ad Soyad</th>
+                            <th>TC</th>
+                            <th>E-posta</th>
+                            <th>Birim</th>
+                            <th>Durum</th>
+                            <th>Detay</th>
+                            <th>Güncelle</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>@item.Id</td>
+
+                                <td>
+                                    @item.Name @item.Surname
+                                </td>
+
+                                <td>@item.IdentityNumber</td>
+
+                                <td>@item.Email</td>
+
+                                <td>@item.Department?.Name</td>
+
+                                <td>
+
+                                    @if (item.Status)
+                                    {
+                                        <span class="badge bg-success text-white">
+                                            Aktif
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger text-white">
+                                            Pasif
+                                        </span>
+                                    }
+
+                                </td>
+
+                                <td>
+
+                                    <a asp-action="PersonDetails"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-info btn-sm">
+
+                                        Detay
+
+                                    </a>
+
+                                </td>
+
+                                <td>
+
+                                    <a asp-action="PersonUpdate"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-warning btn-sm">
+
+                                        Güncelle
+
+                                    </a>
+
+                                </td>
+
+                                <td>
+
+                                    <button type="button"
+                                            class="btn btn-sm @(item.Status ? "btn-danger" : "btn-success") changeStatusBtn"
+                                            data-id="@item.Id"
+                                            data-name="@item.Name @item.Surname"
+                                            data-status="@(item.Status ? "Pasif" : "Aktif")">
+
+                                        @(item.Status ? "Pasif Yap" : "Aktif Yap")
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- STATUS MODAL -->
+<div class="modal fade"
+     id="statusModal"
+     tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Durum Değiştir
+                </h5>
+
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal">
+
+                    <span>&times;</span>
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p id="statusMessage"></p>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <a id="confirmStatusBtn"
+                   class="btn btn-primary">
+
+                    Evet
+
+                </a>
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal">
+
+                    Vazgeç
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script src="~/tema/vendor/datatables/jquery.dataTables.min.js"></script>
+
+    <script src="~/tema/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#dataTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
+                }
+            });
+
+            $('.changeStatusBtn').click(function () {
+
+                var id = $(this).data('id');
+                var personName = $(this).data('name');
+                var status = $(this).data('status');
+
+                $('#statusMessage').html(
+                    '<b>' + personName +
+                    '</b> kişisini <b>' +
+                    status +
+                    '</b> yapmak istediğinize emin misiniz?'
+                );
+
+                $('#confirmStatusBtn').attr(
+                    'href',
+                    '/Person/ChangeStatus/' + id
+                );
+
+                $('#statusModal').modal('show');
+            });
+
+            setTimeout(function () {
+
+                $('.autoHideAlert').fadeOut('slow');
+
+            }, 5000);
+
+        });
+
+    </script>
+}

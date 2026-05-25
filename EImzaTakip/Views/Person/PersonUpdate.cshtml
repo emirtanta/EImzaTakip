@@ -1,0 +1,541 @@
+﻿@model PersonCreateUpdateDto
+
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using EImzaTakip.Models.Enums
+
+@{
+    ViewData["Title"] = "Kişi Güncelle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header py-3">
+
+            <h6 class="m-0 font-weight-bold text-primary">
+                Kişi Güncelle
+            </h6>
+
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="PersonUpdate"
+                  method="post">
+
+                <div asp-validation-summary="All"
+                     class="text-danger mb-3">
+                </div>
+
+                <input type="hidden" asp-for="Id" />
+
+                <!-- TC -->
+                <div class="form-group mb-3">
+
+                    <label asp-for="IdentityNumber"></label>
+
+                    <input asp-for="IdentityNumber"
+                           class="form-control" />
+
+                    <span asp-validation-for="IdentityNumber"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <!-- NAME -->
+                <div class="form-group mb-3">
+
+                    <label asp-for="Name"></label>
+
+                    <input asp-for="Name"
+                           class="form-control" />
+
+                    <span asp-validation-for="Name"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <!-- SURNAME -->
+                <div class="form-group mb-3">
+
+                    <label asp-for="Surname"></label>
+
+                    <input asp-for="Surname"
+                           class="form-control" />
+
+                    <span asp-validation-for="Surname"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <!-- EMAIL -->
+                <div class="form-group mb-3">
+
+                    <label asp-for="Email"></label>
+
+                    <input asp-for="Email"
+                           class="form-control" />
+
+                    <span asp-validation-for="Email"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <!-- BIRTHDATE -->
+                <div class="form-group mb-3">
+
+                    <label asp-for="Birthdate"></label>
+
+                    <input asp-for="Birthdate"
+                           type="date"
+                           class="form-control" />
+
+                </div>
+
+                <!-- DEPARTMENT -->
+                <div class="form-group mb-3">
+
+                    <label asp-for="DepartmentId"></label>
+
+                    <select asp-for="DepartmentId"
+                            class="form-control"
+                            asp-items="@(new SelectList(ViewBag.Departments, "Id", "Name"))">
+
+                        <option value="">
+                            Birim Seçiniz
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="DepartmentId"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <!-- RECOURSE TYPE -->
+                <div class="form-group mb-3">
+
+                    <label asp-for="RecourseType"></label>
+
+                    <select asp-for="RecourseType"
+                            class="form-control"
+                            asp-items="Html.GetEnumSelectList<RecourseTypeEnum>()">
+
+                        <option value="">
+                            Başvuru Tipi Seçiniz
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="RecourseType"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <!-- SMART CARD READER TYPE -->
+                <div class="form-group mb-3">
+
+                    <label asp-for="SmartCardReaderType"></label>
+
+                    <select asp-for="SmartCardReaderType"
+                            class="form-control"
+                            asp-items="Html.GetEnumSelectList<SmartCardReaderTypeEnum>()">
+
+                        <option value="">
+                            Kart Okuyucu Türü Seçiniz
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="SmartCardReaderType"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="form-group mb-3">
+
+                    <label asp-for="Description"></label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"></textarea>
+
+                </div>
+
+                <!-- VIP -->
+                <div class="form-check mb-3">
+
+                    <input asp-for="VIP"
+                           class="form-check-input" />
+
+                    <label asp-for="VIP"
+                           class="form-check-label">
+                    </label>
+
+                </div>
+
+                <!-- YEDEK -->
+                <div class="form-check mb-3">
+
+                    <input asp-for="YedekMi"
+                           class="form-check-input" />
+
+                    <label asp-for="YedekMi"
+                           class="form-check-label">
+                    </label>
+
+                </div>
+
+                <!-- STATUS -->
+                <div class="form-check mb-4">
+
+                    <input asp-for="Status"
+                           class="form-check-input" />
+
+                    <label asp-for="Status"
+                           class="form-check-label">
+                    </label>
+
+                </div>
+
+                <hr />
+
+                <!-- CERTIFICATES -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <h4 class="text-primary">
+                        Sertifikalar
+                    </h4>
+
+                    <button type="button"
+                            id="addCertificateBtn"
+                            class="btn btn-primary btn-sm">
+
+                        <i class="fas fa-plus"></i>
+                        Sertifika Ekle
+
+                    </button>
+
+                </div>
+
+                <div id="certificateContainer">
+
+                    @for (int i = 0; i < Model.Certificates.Count; i++)
+                    {
+                        <div class="card mb-3 certificate-item">
+
+                            <div class="card-body">
+
+                                <button type="button"
+                                        class="btn btn-danger btn-sm float-right removeCertificateBtn">
+
+                                    Sil
+
+                                </button>
+
+                                <input type="hidden"
+                                       asp-for="Certificates[i].Id" />
+
+                                <div class="form-group mb-2">
+
+                                    <label>
+                                        Sertifika Adı
+                                    </label>
+
+                                    <input asp-for="Certificates[i].CertificateName"
+                                           class="form-control" />
+
+                                </div>
+
+                                <div class="form-group mb-2">
+
+                                    <label>
+                                        Başlangıç Tarihi
+                                    </label>
+
+                                    <input asp-for="Certificates[i].StartDate"
+                                           type="date"
+                                           class="form-control" />
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Bitiş Tarihi
+                                    </label>
+
+                                    <input asp-for="Certificates[i].ExpirationDate"
+                                           type="date"
+                                           class="form-control" />
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+                <hr />
+
+                <!-- NOTES -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <h4 class="text-warning">
+                        Notlar
+                    </h4>
+
+                    <button type="button"
+                            id="addNoteBtn"
+                            class="btn btn-warning btn-sm">
+
+                        <i class="fas fa-plus"></i>
+                        Not Ekle
+
+                    </button>
+
+                </div>
+
+                <div id="noteContainer">
+
+                    @for (int i = 0; i < Model.PersonNotes.Count; i++)
+                    {
+                        <div class="card mb-3 note-item">
+
+                            <div class="card-body">
+
+                                <button type="button"
+                                        class="btn btn-danger btn-sm float-right removeNoteBtn">
+
+                                    Sil
+
+                                </button>
+
+                                <input type="hidden"
+                                       asp-for="PersonNotes[i].Id" />
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Not
+                                    </label>
+
+                                    <textarea asp-for="PersonNotes[i].Description"
+                                              class="form-control"></textarea>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+                <!-- BUTTON -->
+                <div class="mt-4">
+
+                    <button type="submit"
+                            class="btn btn-success">
+
+                        <i class="fas fa-save mr-1"></i>
+                        Güncelle
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        let certificateIndex =
+            @Model.Certificates.Count;
+
+        let noteIndex =
+            @Model.PersonNotes.Count;
+
+        // ADD CERTIFICATE
+        $('#addCertificateBtn').click(function () {
+
+            let html = `
+            <div class="card mb-3 certificate-item">
+
+                <div class="card-body">
+
+                    <button type="button"
+                            class="btn btn-danger btn-sm float-right removeCertificateBtn">
+
+                        Sil
+
+                    </button>
+
+                    <div class="form-group mb-2">
+
+                        <label>
+                            Sertifika Adı
+                        </label>
+
+                        <input name="Certificates[${certificateIndex}].CertificateName"
+                               class="form-control" />
+
+                    </div>
+
+                    <div class="form-group mb-2">
+
+                        <label>
+                            Başlangıç Tarihi
+                        </label>
+
+                        <input type="date"
+                               name="Certificates[${certificateIndex}].StartDate"
+                               class="form-control" />
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Bitiş Tarihi
+                        </label>
+
+                        <input type="date"
+                               name="Certificates[${certificateIndex}].ExpirationDate"
+                               class="form-control" />
+
+                    </div>
+
+                </div>
+
+            </div>`;
+
+            $('#certificateContainer').append(html);
+
+            certificateIndex++;
+        });
+
+        // REMOVE CERTIFICATE
+        $(document).on(
+            'click',
+            '.removeCertificateBtn',
+            function () {
+
+                $(this)
+                    .closest('.certificate-item')
+                    .remove();
+            });
+
+        // ADD NOTE
+        $('#addNoteBtn').click(function () {
+
+            let html = `
+            <div class="card mb-3 note-item">
+
+                <div class="card-body">
+
+                    <button type="button"
+                            class="btn btn-danger btn-sm float-right removeNoteBtn">
+
+                        Sil
+
+                    </button>
+
+                    <div class="form-group">
+
+                        <label>
+                            Not
+                        </label>
+
+                        <textarea name="PersonNotes[${noteIndex}].Description"
+                                  class="form-control"></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>`;
+
+            $('#noteContainer').append(html);
+
+            noteIndex++;
+        });
+
+        // REMOVE NOTE
+        $(document).on(
+            'click',
+            '.removeNoteBtn',
+            function () {
+
+                $(this)
+                    .closest('.note-item')
+                    .remove();
+            });
+
+        // INDEX RESET
+        $('form').submit(function () {
+
+            // CERTIFICATE INDEX RESET
+            $('#certificateContainer .certificate-item').each(function (index) {
+
+                $(this).find('input').each(function () {
+
+                    let name = $(this).attr('name');
+
+                    if (name) {
+
+                        name = name.replace(/Certificates\[\d+\]/,
+                            `Certificates[${index}]`);
+
+                        $(this).attr('name', name);
+                    }
+
+                });
+
+            });
+
+            // NOTE INDEX RESET
+            $('#noteContainer .note-item').each(function (index) {
+
+                $(this).find('textarea').each(function () {
+
+                    let name = $(this).attr('name');
+
+                    if (name) {
+
+                        name = name.replace(/PersonNotes\[\d+\]/,
+                            `PersonNotes[${index}]`);
+
+                        $(this).attr('name', name);
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+}

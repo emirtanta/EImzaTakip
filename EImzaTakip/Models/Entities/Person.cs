@@ -53,11 +53,12 @@ namespace EImzaTakip.Models.Entities
         [Display(Name = "VIP")]
         public bool VIP { get; set; }
 
-        public ICollection<Certificate> Certificates { get; set; }
-        = new List<Certificate>();
+        [Display(Name = "Durum")]
+        public bool Status { get; set; }
 
-        public ICollection<PersonNote> PersonNotes { get; set; }
-    = new List<PersonNote>();
+        public ICollection<Certificate> Certificates { get; set; } = new List<Certificate>();
+
+        public ICollection<PersonNote> PersonNotes { get; set; } = new List<PersonNote>();
 
     }
 }

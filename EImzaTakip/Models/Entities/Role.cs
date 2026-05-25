@@ -11,6 +11,8 @@ namespace EImzaTakip.Models.Entities
         [StringLength(100,ErrorMessage ="Rol adı en fazla 100 karakter olmalıdır!")]
         public string Name { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public bool Status { get; set; }
+
+        public ICollection<User> Users { get; set; }= new List<User>();
     }
 }

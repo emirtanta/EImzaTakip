@@ -21,6 +21,12 @@ namespace EImzaTakip.Models.Dtos.UserDtos
         [DataType(DataType.EmailAddress,ErrorMessage ="E-posta uygun formatta değil!")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Kullanıcı adı zorunludur!")]
+        [Display(Name = "Kullanıcı Adı")]
+        [MaxLength(50,ErrorMessage ="Kullanıcı adı en fazla 50 karakter uzunluğunda olmalıdır!")]
+        [MinLength(3,ErrorMessage ="Kullanıcı adı en az 3 karakter uzunluğunda olmalıdır!")]
+        public string NickName { get; set; }
+
         [Required(ErrorMessage = "Şifre zorunludur!")]
         [Display(Name = "Şifre")]
         [DataType(DataType.Password)]
@@ -32,5 +38,9 @@ namespace EImzaTakip.Models.Dtos.UserDtos
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Şifreler uyuşmuyor!")]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage ="Rol seçiniz!")]
+        [Display(Name ="Rol")]
+        public int RoleId { get; set; }
     }
 }

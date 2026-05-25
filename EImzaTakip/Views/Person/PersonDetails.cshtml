@@ -1,0 +1,304 @@
+﻿@model Person
+
+@{
+    ViewData["Title"] = "Kişi Detayları";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header py-3">
+
+            <h6 class="m-0 font-weight-bold text-primary">
+                Kişi Detay Bilgileri
+            </h6>
+
+        </div>
+
+        <div class="card-body">
+
+            <!-- PERSON INFO -->
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="font-weight-bold">
+                        TC Kimlik No
+                    </label>
+
+                    <input value="@Model.IdentityNumber"
+                           class="form-control"
+                           readonly />
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="font-weight-bold">
+                        Ad Soyad
+                    </label>
+
+                    <input value="@Model.Name @Model.Surname"
+                           class="form-control"
+                           readonly />
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="font-weight-bold">
+                        E-posta
+                    </label>
+
+                    <input value="@Model.Email"
+                           class="form-control"
+                           readonly />
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="font-weight-bold">
+                        Birim
+                    </label>
+
+                    <input value="@Model.Department?.Name"
+                           class="form-control"
+                           readonly />
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="font-weight-bold">
+                        Doğum Tarihi
+                    </label>
+
+                    <input value="@Model.Birthdate.ToShortDateString()"
+                           class="form-control"
+                           readonly />
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="font-weight-bold">
+                        Durum
+                    </label>
+
+                    <br />
+
+                    @if (Model.Status)
+                    {
+                        <span class="badge bg-success text-white p-2">
+                            Aktif
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger text-white p-2">
+                            Pasif
+                        </span>
+                    }
+
+                </div>
+
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div class="form-group mb-4">
+
+                <label class="font-weight-bold">
+                    Açıklama
+                </label>
+
+                <textarea class="form-control"
+                          rows="4"
+                          readonly>@Model.Description</textarea>
+
+            </div>
+
+            <hr />
+
+            <!-- CERTIFICATES -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h4 class="text-primary">
+                    Sertifikalar
+                </h4>
+
+                <a asp-action="AddCertificate"
+                   asp-route-personId="@Model.Id"
+                   class="btn btn-primary btn-sm">
+
+                    <i class="fas fa-plus"></i>
+                    Sertifika Ekle
+
+                </a>
+
+            </div>
+
+            @if (Model.Certificates != null &&
+                        Model.Certificates.Any())
+            {
+                <div class="table-responsive mb-4">
+
+                    <table class="table table-bordered">
+
+                        <thead class="thead-dark">
+
+                            <tr>
+
+                                <th>
+                                    Sertifika Adı
+                                </th>
+
+                                <th>
+                                    Başlangıç Tarihi
+                                </th>
+
+                                <th>
+                                    Bitiş Tarihi
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model.Certificates)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @item.CertificateName
+                                    </td>
+
+                                    <td>
+                                        @item.StartDate.ToShortDateString()
+                                    </td>
+
+                                    <td>
+                                        @item.ExpirationDate.ToShortDateString()
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning">
+
+                    Bu kişiye ait sertifika bulunmamaktadır.
+
+                </div>
+            }
+
+            <hr />
+
+            <!-- NOTES -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h4 class="text-warning">
+                    Notlar
+                </h4>
+
+                <a asp-action="AddNote"
+                   asp-route-personId="@Model.Id"
+                   class="btn btn-warning btn-sm">
+
+                    <i class="fas fa-plus"></i>
+                    Not Ekle
+
+                </a>
+
+            </div>
+
+            @if (Model.PersonNotes != null &&
+                        Model.PersonNotes.Any())
+            {
+                @foreach (var note in Model.PersonNotes
+                            .OrderByDescending(x => x.CreatedDate))
+                {
+                    <div class="card shadow-sm mb-3">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between">
+
+                                <h6 class="font-weight-bold text-dark">
+                                    Personel Notu
+                                </h6>
+
+                                <small class="text-muted">
+                                    @note.CreatedDate.ToString("dd.MM.yyyy HH:mm")
+                                </small>
+
+                            </div>
+
+                            <hr />
+
+                            <p class="mb-0">
+
+                                @note.Description
+
+                            </p>
+
+                        </div>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-warning">
+
+                    Bu kişiye ait not bulunmamaktadır.
+
+                </div>
+            }
+
+            <!-- BUTTONS -->
+            <div class="mt-4">
+
+                <a asp-action="PersonList"
+                   class="btn btn-secondary">
+
+                    <i class="fas fa-arrow-left"></i>
+                    Listeye Dön
+
+                </a>
+
+                <a asp-action="PersonUpdate"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-warning">
+
+                    <i class="fas fa-edit"></i>
+                    Güncelle
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

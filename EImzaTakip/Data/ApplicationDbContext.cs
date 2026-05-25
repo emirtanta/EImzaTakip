@@ -1,4 +1,5 @@
 ﻿using EImzaTakip.Models.Entities;
+using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
 
 namespace EImzaTakip.Data
@@ -19,35 +20,37 @@ namespace EImzaTakip.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //User-Role
+            base.OnModelCreating(modelBuilder);
+
+            // USER - ROLE
             modelBuilder.Entity<User>()
-                    .HasOne(x => x.Role)
-                    .WithMany(x => x.Users)
-                    .HasForeignKey(x => x.RoleId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(x => x.Role)
+                .WithMany(x => x.Users)
+                .HasForeignKey(x => x.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            //Person-Department
+            // PERSON - DEPARTMENT
             modelBuilder.Entity<Person>()
-                    .HasOne(x=>x.Department)
-                    .WithMany(x=>x.Persons)
-                    .HasForeignKey(x=>x.DepartmentId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(x => x.Department)
+                .WithMany(x => x.Persons)
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            //Person-Person Note
+            // PERSON - PERSON NOTE
             modelBuilder.Entity<PersonNote>()
-                    .HasOne(x=>x.Person)
-                    .WithMany()
-                    .HasForeignKey(x=>x.PersonId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(x => x.Person)
+                .WithMany(x => x.PersonNotes)
+                .HasForeignKey(x => x.PersonId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            //Person-Certificate
+            // PERSON - CERTIFICATE
             modelBuilder.Entity<Certificate>()
-                    .HasOne(x=>x.Person)
-                    .WithMany(x=>x.Certificates)
-                    .HasForeignKey(x=>x.PersonId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(x => x.Person)
+                .WithMany(x => x.Certificates)
+                .HasForeignKey(x => x.PersonId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            //User
+            // USER
             modelBuilder.Entity<User>()
                 .Property(x => x.Name)
                 .HasMaxLength(100);
@@ -64,17 +67,17 @@ namespace EImzaTakip.Data
                 .Property(x => x.Email)
                 .HasMaxLength(100);
 
-            //Role
+            // ROLE
             modelBuilder.Entity<Role>()
-                .Property(x=>x.Name)
+                .Property(x => x.Name)
                 .HasMaxLength(100);
 
-            //Department
+            // DEPARTMENT
             modelBuilder.Entity<Department>()
-                .Property(x=>x.Name)
-                .HasMaxLength(100);
+                .Property(x => x.Name)
+                .HasMaxLength(150);
 
-            //Person
+            // PERSON
             modelBuilder.Entity<Person>()
                 .Property(x => x.IdentityNumber)
                 .HasMaxLength(11);
@@ -82,19 +85,48 @@ namespace EImzaTakip.Data
             modelBuilder.Entity<Person>()
                 .Property(x => x.Name)
                 .HasMaxLength(100);
+
             modelBuilder.Entity<Person>()
                 .Property(x => x.Surname)
                 .HasMaxLength(100);
+
             modelBuilder.Entity<Person>()
                 .Property(x => x.Email)
                 .HasMaxLength(100);
 
-            //Certificate
+            // CERTIFICATE
             modelBuilder.Entity<Certificate>()
-                .Property(x=>x.CertificateName)
+                .Property(x => x.CertificateName)
                 .HasMaxLength(100);
 
-            base.OnModelCreating(modelBuilder);
+            // ROLE SEED
+            modelBuilder.Entity<Role>().HasData(
+                new Role
+                {
+                    Id = 1,
+                    Name = "Admin"
+                },
+                new Role
+                {
+                    Id = 2,
+                    Name = "Editör"
+                }
+            );
+
+            // USER SEED
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    Name = "Admin",
+                    Surname = "Admin",
+                    NickName = "admin",
+                    Email = "admin@test.com",
+                    Password = "123456",
+                    // Password = BCrypt.Net.BCrypt.HashPassword("123456"),
+                    RoleId = 1
+                }
+            );
         }
     }
 }

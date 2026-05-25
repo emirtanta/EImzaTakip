@@ -11,6 +11,8 @@ namespace EImzaTakip.Models.Entities
         [StringLength(150,ErrorMessage ="Birim adı en fazla 150 karakter uzunluğunda olmalıdır!")]
         public string Name { get; set; }
 
-        public ICollection<Person> Persons { get; set; }
+        public bool Status { get; set; }
+
+        public ICollection<Person> Persons { get; set; } = new List<Person>();
     }
 }

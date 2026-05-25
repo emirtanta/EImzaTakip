@@ -27,5 +27,22 @@ namespace EImzaTakip.Models.Dtos.UserDtos
         [StringLength(100, ErrorMessage = "E-posta adresi en fazla 100 karakter uzunluğunda olmalıdır!")]
         [EmailAddress(ErrorMessage = "Geçerli bir e-posta adresi giriniz!")]
         public string Email { get; set; } = string.Empty;
+
+        [Display(Name ="Durum")]
+        public bool Status { get; set; }
+
+        [Required(ErrorMessage = "Rol seçiniz!")]
+        [Display(Name = "Rol")]
+        public int RoleId { get; set; }
+
+        [Display(Name = "Yeni Şifre")]
+        [DataType(DataType.Password)]
+        [MinLength(6, ErrorMessage = "Şifre en az 6 karakter olmalıdır!")]
+        public string? Password { get; set; }
+
+        [Display(Name = "Yeni Şifre Tekrar")]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Şifreler uyuşmuyor!")]
+        public string? ConfirmPassword { get; set; }
     }
 }

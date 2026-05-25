@@ -16,6 +16,12 @@ namespace EImzaTakip.Models.Dtos.UserDtos
         public string NickName { get; set; }
 
         [Display(Name = "E-posta")]
-        public string Email { get; set; } 
+        public string Email { get; set; }
+
+        [Display(Name = "Rolü")]
+        public string RoleName { get; set; }
+
+        [Display(Name = "Durum")]
+        public bool Status { get; set; }
     }
 }

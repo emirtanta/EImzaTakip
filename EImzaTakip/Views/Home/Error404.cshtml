@@ -1,0 +1,115 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="tr">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1" />
+
+    <title>
+        404 - Sayfa Bulunamadı
+    </title>
+
+    <!-- FONT AWESOME -->
+    <link href="~/tema/vendor/fontawesome-free/css/all.min.css"
+          rel="stylesheet" />
+
+    <!-- GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900"
+          rel="stylesheet">
+
+    <!-- SB ADMIN CSS -->
+    <link href="~/tema/css/sb-admin-2.min.css"
+          rel="stylesheet">
+
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f8f9fc;
+        }
+
+        .error-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .error-code {
+            font-size: 180px;
+            font-weight: 800;
+            color: #5a5c69;
+            line-height: 1;
+        }
+
+        .error-title {
+            font-size: 35px;
+            color: #858796;
+            margin-top: 10px;
+        }
+
+        .error-description {
+            margin-top: 20px;
+            color: #b7b9cc;
+            font-size: 18px;
+        }
+
+        .back-link {
+            margin-top: 25px;
+            font-size: 18px;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="error-container">
+
+        <div class="error-code">
+            404
+        </div>
+
+        <div class="error-title">
+            Sayfa Bulunamadı
+        </div>
+
+        <div class="error-description">
+
+            Aradığınız sayfa bulunamadı
+            veya kaldırılmış olabilir.
+
+        </div>
+
+        <a asp-controller="User"
+           asp-action="Login"
+           class="back-link">
+
+            <i class="fas fa-arrow-left"></i>
+
+            Giriş sayfasına dön!
+
+        </a>
+
+    </div>
+
+</body>
+
+</html>

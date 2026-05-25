@@ -18,6 +18,11 @@ namespace EImzaTakip.Models.Dtos.UserDtos
         [Display(Name = "E-posta")]
         public string Email { get; set; } = string.Empty;
 
+        public int RoleId { get; set; }
+
+        [Display(Name = "Rolü")]
+        public string RoleName { get; set; } = string.Empty;
+
         [Display(Name = "Ad Soyad")]
         public string FullName
         {

@@ -1,0 +1,202 @@
+﻿@model RegisterUserDto
+
+@{
+    ViewData["Title"] = "Kullanıcı Ekle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+        <h1 class="h3 mb-0 text-gray-800">
+            Yeni Kullanıcı Ekle
+        </h1>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow mb-4">
+
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Kullanıcı Bilgileri
+                    </h6>
+                </div>
+
+                <div class="card-body">
+
+                    <form asp-controller="User"
+                          asp-action="Register"
+                          method="post">
+
+                        <div asp-validation-summary="All"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <!-- AD -->
+                        <div class="form-group mb-4">
+
+                            <label asp-for="Name"
+                                   class="font-weight-bold text-dark">
+                            </label>
+
+                            <input asp-for="Name"
+                                   class="form-control form-control-lg"
+                                   placeholder="Ad giriniz..." />
+
+                            <span asp-validation-for="Name"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+                        <!-- SOYAD -->
+                        <div class="form-group mb-4">
+
+                            <label asp-for="Surname"
+                                   class="font-weight-bold text-dark">
+                            </label>
+
+                            <input asp-for="Surname"
+                                   class="form-control form-control-lg"
+                                   placeholder="Soyad giriniz..." />
+
+                            <span asp-validation-for="Surname"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+                        <!-- KULLANICI ADI -->
+                        <div class="form-group mb-4">
+
+                            <label asp-for="NickName"
+                                   class="font-weight-bold text-dark">
+                            </label>
+
+                            <input asp-for="NickName"
+                                   class="form-control form-control-lg"
+                                   placeholder="Kullanıcı adı giriniz..." />
+
+                            <span asp-validation-for="NickName"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+                        <!-- EMAIL -->
+                        <div class="form-group mb-4">
+
+                            <label asp-for="Email"
+                                   class="font-weight-bold text-dark">
+                            </label>
+
+                            <input asp-for="Email"
+                                   class="form-control form-control-lg"
+                                   placeholder="E-posta adresi giriniz..." />
+
+                            <span asp-validation-for="Email"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+                        <!-- ROLE -->
+                        <div class="form-group mb-4">
+
+                            <label asp-for="RoleId"
+                                   class="font-weight-bold text-dark">
+                            </label>
+
+                            <select asp-for="RoleId"
+                                    class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.Roles, "Id", "Name"))">
+
+                                <option value="">
+                                    Rol Seçiniz
+                                </option>
+
+                            </select>
+
+                            <span asp-validation-for="RoleId"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+                        <!-- PASSWORD -->
+                        <div class="form-group mb-4">
+
+                            <label asp-for="Password"
+                                   class="font-weight-bold text-dark">
+                            </label>
+
+                            <input asp-for="Password"
+                                   class="form-control form-control-lg"
+                                   placeholder="Şifre giriniz..." />
+
+                            <span asp-validation-for="Password"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+                        <!-- CONFIRM PASSWORD -->
+                        <div class="form-group mb-4">
+
+                            <label asp-for="ConfirmPassword"
+                                   class="font-weight-bold text-dark">
+                            </label>
+
+                            <input asp-for="ConfirmPassword"
+                                   class="form-control form-control-lg"
+                                   placeholder="Şifre tekrar giriniz..." />
+
+                            <span asp-validation-for="ConfirmPassword"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+
+                            <a asp-controller="User"
+                               asp-action="UserList"
+                               class="btn btn-secondary mr-2">
+                                Vazgeç
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="fas fa-save mr-1"></i>
+                                Kaydet
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}
