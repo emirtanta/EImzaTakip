@@ -109,6 +109,13 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link" asp-controller="Statistic" asp-action="SignatureReport">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Raporlar</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" asp-controller="Person" asp-action="PersonList">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Kişiler</span>
@@ -144,7 +151,7 @@
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="ara..."
                                 aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
@@ -182,7 +189,7 @@
                         </li>
 
                         <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
+                        @* <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
@@ -230,10 +237,10 @@
                                 </a>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
-                        </li>
+                        </li> *@
 
                         <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
+                        @* <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-envelope fa-fw"></i>
@@ -296,7 +303,7 @@
                                 </a>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                             </div>
-                        </li>
+                        </li> *@
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -418,12 +425,11 @@
     <!-- Custom scripts for all pages-->
     <script src="~/tema/js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="~/tema/vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="~/tema/js/demo/chart-area-demo.js"></script>
-    <script src="~/tema/js/demo/chart-pie-demo.js"></script>
+    
+        <script src="~/tema/vendor/chart.js/Chart.min.js"></script>
+        <script src="~/tema/js/demo/chart-area-demo.js"></script>
+        <script src="~/tema/js/demo/chart-pie-demo.js"></script>
+    
 
     @await RenderSectionAsync("Scripts", required: false)
 

@@ -1,0 +1,158 @@
+﻿@model List<StatisticReportDto>
+@{
+    ViewData["Title"] = "İmza Raporları";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Css {
+    <link href="~/tema/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
+}
+
+<div class="container-fluid">
+
+    <h1 class="h3 mb-4 text-gray-800">
+        E-İmza / Mobil İmza Raporu
+    </h1>
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">
+                Rapor Filtreleri
+            </h6>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="SignatureReport" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+                        <label>Başlangıç Tarihi</label>
+                        <input type="date"
+                               name="startDate"
+                               value="@ViewBag.StartDate"
+                               class="form-control" />
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Bitiş Tarihi</label>
+                        <input type="date"
+                               name="endDate"
+                               value="@ViewBag.EndDate"
+                               class="form-control" />
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Sertifika Türü</label>
+                        <select name="certificateType" class="form-control">
+                            <option value="">Tümü</option>
+                            <option value="NES">NES / E-İmza</option>
+                            <option value="Mobil NES">Mobil NES / Mobil İmza</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Raporla
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">
+                Rapor Sonuçları
+            </h6>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered"
+                       id="reportTable"
+                       width="100%"
+                       cellspacing="0">
+
+                    <thead>
+                        <tr>
+                            <th>TC Kimlik No</th>
+                            <th>Ad Soyad</th>
+                            <th>Birim</th>
+                            <th>Sertifika Türü</th>
+                            <th>Başlangıç Tarihi</th>
+                            <th>Bitiş Tarihi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.IdentityNumber</td>
+                                <td>@item.FullName</td>
+                                <td>@item.DepartmentName</td>
+                                <td>
+                                    @if (item.CertificateName == "Mobil NES")
+                                    {
+                                        <span class="badge badge-success">
+                                            @item.CertificateName
+                                        </span>
+                                    }
+                                    else if (item.CertificateName == "NES Sertifikası")
+                                    {
+                                        <span class="badge badge-primary">
+                                            @item.CertificateName
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-secondary">
+                                            @item.CertificateName
+                                        </span>
+                                    }
+                                </td>
+                                <td>@item.StartDate.ToString("dd.MM.yyyy")</td>
+                                <td>@item.ExpirationDate.ToString("dd.MM.yyyy")</td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script src="~/tema/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/tema/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#reportTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [10, 25, 50, 100],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
+                }
+            });
+        });
+    </script>
+}
+
