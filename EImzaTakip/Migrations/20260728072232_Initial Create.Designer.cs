@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EImzaTakip.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260523104338_Tablolara Durum kolonunu ekle")]
-    partial class TablolaraDurumkolonunuekle
+    [Migration("20260728072232_Initial Create")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -183,13 +183,13 @@ namespace EImzaTakip.Migrations
                         {
                             Id = 1,
                             Name = "Admin",
-                            Status = false
+                            Status = true
                         },
                         new
                         {
                             Id = 2,
                             Name = "Editör",
-                            Status = false
+                            Status = true
                         });
                 });
 
@@ -223,6 +223,9 @@ namespace EImzaTakip.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -241,8 +244,9 @@ namespace EImzaTakip.Migrations
                             Email = "admin@test.com",
                             Name = "Admin",
                             NickName = "admin",
-                            Password = "123456",
+                            Password = "$2a$11$q9CfZTE0eQgpvK0VvfvPcObZMdvd1uMYcUnE0pBG/BzR2OH0pZyi.",
                             RoleId = 1,
+                            Status = true,
                             Surname = "Admin"
                         });
                 });

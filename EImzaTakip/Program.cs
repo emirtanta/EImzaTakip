@@ -1,5 +1,6 @@
 using EImzaTakip.Data;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
+
+QuestPDF.Settings.License = LicenseType.Professional;
 
 var app = builder.Build();
 

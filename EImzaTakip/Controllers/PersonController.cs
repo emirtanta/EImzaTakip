@@ -48,15 +48,23 @@ namespace EImzaTakip.Controllers
         public async Task<IActionResult> PersonCreate()
         {
             ViewBag.Departments = await _context.Departments
-        .Where(x => x.Status)
-        .OrderBy(x => x.Name)
-        .ToListAsync();
+                .Where(x => x.Status)
+                .OrderBy(x => x.Name)
+                .ToListAsync();
 
-            PersonCreateUpdateDto model =
-                new PersonCreateUpdateDto();
+            var today = DateTime.Today;
 
-            // BOŞ SATIRLAR
-            model.Certificates.Add(new Certificate());
+            var model = new PersonCreateUpdateDto
+            {
+                Birthdate = today,
+                Status = true
+            };
+
+            model.Certificates.Add(new Certificate
+            {
+                StartDate = today,
+                ExpirationDate = today
+            });
 
             model.PersonNotes.Add(new PersonNote());
 

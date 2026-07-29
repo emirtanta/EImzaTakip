@@ -16,16 +16,19 @@
 
             <h6 class="m-0 font-weight-bold text-primary">
                 Yeni Kişi Ekle
+
             </h6>
+
+            
 
         </div>
 
         <div class="card-body">
 
             <form asp-action="PersonCreate"
-                  method="post">
+                  method="post" autocomplete="off">
 
-                <div asp-validation-summary="All"
+                <div asp-validation-summary="ModelOnly"
                      class="text-danger mb-3">
                 </div>
 
@@ -35,7 +38,11 @@
                     <label asp-for="IdentityNumber"></label>
 
                     <input asp-for="IdentityNumber"
-                           class="form-control" />
+                           class="form-control"
+                           maxlength="11"
+                           inputmode="numeric"
+                           autocomplete="off"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);" />
 
                     <span asp-validation-for="IdentityNumber"
                           class="text-danger">
@@ -49,7 +56,9 @@
                     <label asp-for="Name"></label>
 
                     <input asp-for="Name"
-                           class="form-control" />
+                           class="form-control"
+                           autocomplete="off"
+                           oninput="this.value = this.value.replace(/[0-9]/g, '');" />
 
                     <span asp-validation-for="Name"
                           class="text-danger">
@@ -63,7 +72,9 @@
                     <label asp-for="Surname"></label>
 
                     <input asp-for="Surname"
-                           class="form-control" />
+                           class="form-control"
+                           autocomplete="off"
+                           oninput="this.value = this.value.replace(/[0-9]/g, '');" />
 
                     <span asp-validation-for="Surname"
                           class="text-danger">
@@ -347,6 +358,13 @@
 
                     </button>
 
+                    <a asp-action="PersonList"
+                       class="btn btn-danger mr-2">
+
+                        Geri
+
+                    </a>
+
                 </div>
 
             </form>
@@ -372,6 +390,8 @@
         // NOTE INDEX
         let noteIndex =
             @Model.PersonNotes.Count;
+
+        const today = '@DateTime.Today.ToString("yyyy-MM-dd")';
 
         // ADD CERTIFICATE
         $('#addCertificateBtn').click(function () {
@@ -405,9 +425,10 @@
                             Başlangıç Tarihi
                         </label>
 
-                        <input type="date"
-                               name="Certificates[${certificateIndex}].StartDate"
-                               class="form-control" />
+                                <input type="date"
+               name="Certificates[${certificateIndex}].StartDate"
+               value="${today}"
+               class="form-control" />
 
                     </div>
 
@@ -417,9 +438,10 @@
                             Bitiş Tarihi
                         </label>
 
-                        <input type="date"
-                               name="Certificates[${certificateIndex}].ExpirationDate"
-                               class="form-control" />
+                                <input type="date"
+               name="Certificates[${certificateIndex}].ExpirationDate"
+               value="${today}"
+               class="form-control" />
 
                     </div>
 

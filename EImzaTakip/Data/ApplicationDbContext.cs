@@ -104,12 +104,14 @@ namespace EImzaTakip.Data
                 new Role
                 {
                     Id = 1,
-                    Name = "Admin"
+                    Name = "Admin",
+                    Status=true
                 },
                 new Role
                 {
                     Id = 2,
-                    Name = "Editör"
+                    Name = "Editör",
+                    Status =true
                 }
             );
 
@@ -122,8 +124,9 @@ namespace EImzaTakip.Data
                     Surname = "Admin",
                     NickName = "admin",
                     Email = "admin@test.com",
-                    Password = "123456",
-                    // Password = BCrypt.Net.BCrypt.HashPassword("123456"),
+                    Status=true,
+                    //Password = "123456",
+                    Password = BCrypt.Net.BCrypt.HashPassword("123456"),
                     RoleId = 1
                 }
             );

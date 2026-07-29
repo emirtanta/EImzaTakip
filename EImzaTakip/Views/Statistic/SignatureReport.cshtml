@@ -61,6 +61,21 @@
                     Raporla
                 </button>
 
+                @if (Model != null && Model.Any())
+                {
+                    <a asp-controller="Statistic"
+                       asp-action="ExportPdf"
+                       asp-route-startDate="@ViewBag.StartDate"
+                       asp-route-endDate="@ViewBag.EndDate"
+                       asp-route-certificateType="@ViewBag.CertificateType"
+                       class="btn btn-danger ml-2">
+
+                        <i class="fas fa-file-pdf mr-1"></i>
+                        PDF İndir
+
+                    </a>
+                }
+
             </form>
 
         </div>

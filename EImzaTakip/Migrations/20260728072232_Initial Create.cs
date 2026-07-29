@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EImzaTakip.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate1 : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,8 @@ namespace EImzaTakip.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,7 +33,8 @@ namespace EImzaTakip.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,7 +57,8 @@ namespace EImzaTakip.Migrations
                     YedekMi = table.Column<bool>(type: "bit", nullable: false),
                     SmartCardReaderType = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VIP = table.Column<bool>(type: "bit", nullable: false)
+                    VIP = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,6 +82,7 @@ namespace EImzaTakip.Migrations
                     NickName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -137,17 +141,17 @@ namespace EImzaTakip.Migrations
 
             migrationBuilder.InsertData(
                 table: "Roles",
-                columns: new[] { "Id", "Name" },
+                columns: new[] { "Id", "Name", "Status" },
                 values: new object[,]
                 {
-                    { 1, "Admin" },
-                    { 2, "Editör" }
+                    { 1, "Admin", true },
+                    { 2, "Editör", true }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Email", "Name", "NickName", "Password", "RoleId", "Surname" },
-                values: new object[] { 1, "admin@test.com", "Admin", "admin", "123456", 1, "Admin" });
+                columns: new[] { "Id", "Email", "Name", "NickName", "Password", "RoleId", "Status", "Surname" },
+                values: new object[] { 1, "admin@test.com", "Admin", "admin", "$2a$11$q9CfZTE0eQgpvK0VvfvPcObZMdvd1uMYcUnE0pBG/BzR2OH0pZyi.", 1, true, "Admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Certificates_PersonId",
