@@ -7,6 +7,8 @@ namespace EImzaTakip.Models.Entities
         public int Id { get; set; }
 
         [Display(Name ="Sertifika adı")]
+        [RegularExpression(@"^(NES|Mobil NES)$",
+        ErrorMessage = "Geçerli bir sertifika türü seçiniz!")]
         public string? CertificateName { get; set; }
 
         [Display(Name = "Başlangıç Tarihi")]

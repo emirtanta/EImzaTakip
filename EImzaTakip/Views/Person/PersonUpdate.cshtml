@@ -237,9 +237,7 @@
 
                                 <button type="button"
                                         class="btn btn-danger btn-sm float-right removeCertificateBtn">
-
                                     Sil
-
                                 </button>
 
                                 <input type="hidden"
@@ -248,11 +246,29 @@
                                 <div class="form-group mb-2">
 
                                     <label>
-                                        Sertifika Adı
+                                        Sertifika Türü
                                     </label>
 
-                                    <input asp-for="Certificates[i].CertificateName"
-                                           class="form-control" />
+                                    <select asp-for="Certificates[i].CertificateName"
+                                            class="form-control certificate-name">
+
+                                        <option value="">
+                                            Sertifika Türü Seçiniz
+                                        </option>
+
+                                        <option value="NES">
+                                            NES
+                                        </option>
+
+                                        <option value="Mobil NES">
+                                            Mobil NES
+                                        </option>
+
+                                    </select>
+
+                                    <span asp-validation-for="Certificates[i].CertificateName"
+                                          class="text-danger">
+                                    </span>
 
                                 </div>
 
@@ -389,55 +405,69 @@
         $('#addCertificateBtn').click(function () {
 
             let html = `
-            <div class="card mb-3 certificate-item">
+                <div class="card mb-3 certificate-item">
 
-                <div class="card-body">
+                    <div class="card-body">
 
-                    <button type="button"
-                            class="btn btn-danger btn-sm float-right removeCertificateBtn">
+                        <button type="button"
+                                class="btn btn-danger btn-sm float-right removeCertificateBtn">
+                            Sil
+                        </button>
 
-                        Sil
+                        <div class="form-group mb-2">
 
-                    </button>
+                            <label>
+                                Sertifika Türü
+                            </label>
 
-                    <div class="form-group mb-2">
+                            <select name="Certificates[${certificateIndex}].CertificateName"
+                                    class="form-control certificate-name">
 
-                        <label>
-                            Sertifika Adı
-                        </label>
+                                <option value="">
+                                    Sertifika Türü Seçiniz
+                                </option>
 
-                        <input name="Certificates[${certificateIndex}].CertificateName"
-                               class="form-control" />
+                                <option value="NES">
+                                    NES
+                                </option>
+
+                                <option value="Mobil NES">
+                                    Mobil NES
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group mb-2">
+
+                            <label>
+                                Başlangıç Tarihi
+                            </label>
+
+                            <input type="date"
+                                   name="Certificates[${certificateIndex}].StartDate"
+                                   value="${today}"
+                                   class="form-control" />
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                Bitiş Tarihi
+                            </label>
+
+                            <input type="date"
+                                   name="Certificates[${certificateIndex}].ExpirationDate"
+                                   value="${today}"
+                                   class="form-control" />
+
+                        </div>
 
                     </div>
 
-                    <div class="form-group mb-2">
-
-                        <label>
-                            Başlangıç Tarihi
-                        </label>
-
-                        <input type="date"
-                               name="Certificates[${certificateIndex}].StartDate"
-                               class="form-control" />
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label>
-                            Bitiş Tarihi
-                        </label>
-
-                        <input type="date"
-                               name="Certificates[${certificateIndex}].ExpirationDate"
-                               class="form-control" />
-
-                    </div>
-
-                </div>
-
-            </div>`;
+                </div>`;
 
             $('#certificateContainer').append(html);
 
@@ -505,42 +535,60 @@
         $('form').submit(function () {
 
             // CERTIFICATE INDEX RESET
-            $('#certificateContainer .certificate-item').each(function (index) {
+            $('#certificateContainer .certificate-item')
+                .each(function (index) {
 
-                $(this).find('input').each(function () {
+                    $(this)
+                        .find('input, select')
+                        .each(function () {
 
-                    let name = $(this).attr('name');
+                            let name =
+                                $(this).attr('name');
 
-                    if (name) {
+                            if (name) {
 
-                        name = name.replace(/Certificates\[\d+\]/,
-                            `Certificates[${index}]`);
+                                name = name.replace(
+                                    /Certificates\[\d+\]/,
+                                    `Certificates[${index}]`
+                                );
 
-                        $(this).attr('name', name);
-                    }
+                                $(this).attr(
+                                    'name',
+                                    name
+                                );
+                            }
+
+                        });
 
                 });
-
-            });
 
             // NOTE INDEX RESET
-            $('#noteContainer .note-item').each(function (index) {
+            $('#noteContainer .note-item')
+                .each(function (index) {
 
-                $(this).find('textarea').each(function () {
+                    $(this)
+                        .find('input, textarea')
+                        .each(function () {
 
-                    let name = $(this).attr('name');
+                            let name =
+                                $(this).attr('name');
 
-                    if (name) {
+                            if (name) {
 
-                        name = name.replace(/PersonNotes\[\d+\]/,
-                            `PersonNotes[${index}]`);
+                                name = name.replace(
+                                    /PersonNotes\[\d+\]/,
+                                    `PersonNotes[${index}]`
+                                );
 
-                        $(this).attr('name', name);
-                    }
+                                $(this).attr(
+                                    'name',
+                                    name
+                                );
+                            }
+
+                        });
 
                 });
-
-            });
 
         });
 

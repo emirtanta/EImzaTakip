@@ -258,8 +258,26 @@
                                         Sertifika Adı
                                     </label>
 
-                                    <input asp-for="Certificates[i].CertificateName"
-                                           class="form-control" />
+                                    <select asp-for="Certificates[i].CertificateName"
+                                            class="form-control certificate-name">
+
+                                        <option value="">
+                                            Sertifika Türü Seçiniz
+                                        </option>
+
+                                        <option value="NES">
+                                            NES
+                                        </option>
+
+                                        <option value="Mobil NES">
+                                            Mobil NES
+                                        </option>
+
+                                    </select>
+
+                                    <span asp-validation-for="Certificates[i].CertificateName"
+                                          class="text-danger">
+                                    </span>
 
                                 </div>
 
@@ -403,19 +421,31 @@
 
                     <button type="button"
                             class="btn btn-danger btn-sm float-right removeCertificateBtn">
-
                         Sil
-
                     </button>
 
                     <div class="form-group mb-2">
 
                         <label>
-                            Sertifika Adı
+                            Sertifika Türü
                         </label>
 
-                        <input name="Certificates[${certificateIndex}].CertificateName"
-                               class="form-control" />
+                        <select name="Certificates[${certificateIndex}].CertificateName"
+                                class="form-control certificate-name">
+
+                            <option value="">
+                                Sertifika Türü Seçiniz
+                            </option>
+
+                            <option value="NES">
+                                NES
+                            </option>
+
+                            <option value="Mobil NES">
+                                Mobil NES
+                            </option>
+
+                        </select>
 
                     </div>
 
@@ -425,10 +455,10 @@
                             Başlangıç Tarihi
                         </label>
 
-                                <input type="date"
-               name="Certificates[${certificateIndex}].StartDate"
-               value="${today}"
-               class="form-control" />
+                        <input type="date"
+                               name="Certificates[${certificateIndex}].StartDate"
+                               value="${today}"
+                               class="form-control" />
 
                     </div>
 
@@ -438,10 +468,10 @@
                             Bitiş Tarihi
                         </label>
 
-                                <input type="date"
-               name="Certificates[${certificateIndex}].ExpirationDate"
-               value="${today}"
-               class="form-control" />
+                        <input type="date"
+                               name="Certificates[${certificateIndex}].ExpirationDate"
+                               value="${today}"
+                               class="form-control" />
 
                     </div>
 
@@ -514,19 +544,47 @@
                 $('form').submit(function () {
 
             // CERTIFICATE INDEX RESET
-            $('#certificateContainer .certificate-item').each(function (index) {
+            $('form').submit(function () {
 
-                $(this).find('input').each(function () {
+                // CERTIFICATE INDEX RESET
+                $('#certificateContainer .certificate-item').each(function (index) {
 
-                    let name = $(this).attr('name');
+                    $(this).find('input, select').each(function () {
 
-                    if (name) {
+                        let name = $(this).attr('name');
 
-                        name = name.replace(/Certificates\[\d+\]/,
-                            `Certificates[${index}]`);
+                        if (name) {
 
-                        $(this).attr('name', name);
-                    }
+                            name = name.replace(
+                                /Certificates\[\d+\]/,
+                                `Certificates[${index}]`
+                            );
+
+                            $(this).attr('name', name);
+                        }
+
+                    });
+
+                });
+
+                // NOTE INDEX RESET
+                $('#noteContainer .note-item').each(function (index) {
+
+                    $(this).find('textarea').each(function () {
+
+                        let name = $(this).attr('name');
+
+                        if (name) {
+
+                            name = name.replace(
+                                /PersonNotes\[\d+\]/,
+                                `PersonNotes[${index}]`
+                            );
+
+                            $(this).attr('name', name);
+                        }
+
+                    });
 
                 });
 
