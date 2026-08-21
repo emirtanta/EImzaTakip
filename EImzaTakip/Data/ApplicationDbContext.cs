@@ -83,6 +83,10 @@ namespace EImzaTakip.Data
                 .HasMaxLength(11);
 
             modelBuilder.Entity<Person>()
+                        .HasIndex(x => x.IdentityNumber)
+                        .IsUnique();
+
+            modelBuilder.Entity<Person>()
                 .Property(x => x.Name)
                 .HasMaxLength(100);
 

@@ -80,10 +80,22 @@ namespace EImzaTakip.Controllers
                 .OrderBy(x => x.Name)
                 .ToListAsync();
 
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(dto);
-            //}
+            // TC KİMLİK NO KONTROLÜ
+            var identityNumberExists = await _context.Persons
+                .AnyAsync(x => x.IdentityNumber == dto.IdentityNumber);
+
+            if (identityNumberExists)
+            {
+                ModelState.AddModelError(
+                    nameof(dto.IdentityNumber),
+                    "Bu TC Kimlik Numarasına ait kişi sistemde kayıtlıdır!"
+                );
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
 
             Person person = new Person
             {
@@ -107,10 +119,9 @@ namespace EImzaTakip.Controllers
 
             // CERTIFICATES
             foreach (var certificate in dto.Certificates?
-             .Where(x =>
-                 !string.IsNullOrWhiteSpace(
-                     x.CertificateName))
-             ?? Enumerable.Empty<Certificate>())
+                .Where(x =>
+                    !string.IsNullOrWhiteSpace(x.CertificateName))
+                ?? Enumerable.Empty<Certificate>())
             {
                 certificate.PersonId = person.Id;
 
@@ -120,10 +131,9 @@ namespace EImzaTakip.Controllers
 
             // NOTES
             foreach (var note in dto.PersonNotes?
-             .Where(x =>
-                 !string.IsNullOrWhiteSpace(
-                     x.Description))
-             ?? Enumerable.Empty<PersonNote>())
+                .Where(x =>
+                    !string.IsNullOrWhiteSpace(x.Description))
+                ?? Enumerable.Empty<PersonNote>())
             {
                 note.PersonId = person.Id;
 
@@ -191,19 +201,33 @@ namespace EImzaTakip.Controllers
                 .OrderBy(x => x.Name)
                 .ToListAsync();
 
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(dto);
-            //}
+            // TC KİMLİK NO KONTROLÜ
+            var identityNumberExists = await _context.Persons
+                .AnyAsync(x =>
+                    x.IdentityNumber == dto.IdentityNumber &&
+                    x.Id != dto.Id);
+
+            if (identityNumberExists)
+            {
+                ModelState.AddModelError(
+                    nameof(dto.IdentityNumber),
+                    "Bu TC Kimlik Numarasına ait başka bir kişi sistemde kayıtlıdır!"
+                );
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
 
             var person = await _context.Persons
-        .Include(x => x.Certificates)
-        .Include(x => x.PersonNotes)
-        .FirstOrDefaultAsync(x => x.Id == dto.Id);
+                .Include(x => x.Certificates)
+                .Include(x => x.PersonNotes)
+                .FirstOrDefaultAsync(x => x.Id == dto.Id);
 
             if (person == null)
             {
-                return NotFound();
+                return NotFound("Kişi bulunamadı!");
             }
 
             // PERSON UPDATE
@@ -221,37 +245,41 @@ namespace EImzaTakip.Controllers
             person.Status = dto.Status;
 
             // CERTIFICATES RESET
-            _context.Certificates.RemoveRange(person.Certificates);
+            _context.Certificates.RemoveRange(
+                person.Certificates);
 
             foreach (var certificate in dto.Certificates?
-         .Where(x =>
-             !string.IsNullOrWhiteSpace(
-                 x.CertificateName))
-         ?? Enumerable.Empty<Certificate>())
+                .Where(x =>
+                    !string.IsNullOrWhiteSpace(x.CertificateName))
+                ?? Enumerable.Empty<Certificate>())
             {
+                certificate.Id = 0;
                 certificate.PersonId = person.Id;
 
-                await _context.Certificates.AddAsync(certificate);
+                await _context.Certificates
+                    .AddAsync(certificate);
             }
 
             // NOTES RESET
-            _context.PersonNotes.RemoveRange(person.PersonNotes);
+            _context.PersonNotes.RemoveRange(
+                person.PersonNotes);
 
             foreach (var note in dto.PersonNotes?
-         .Where(x =>
-             !string.IsNullOrWhiteSpace(
-                 x.Description))
-         ?? Enumerable.Empty<PersonNote>())
+                .Where(x =>
+                    !string.IsNullOrWhiteSpace(x.Description))
+                ?? Enumerable.Empty<PersonNote>())
             {
+                note.Id = 0;
                 note.PersonId = person.Id;
 
-                await _context.PersonNotes.AddAsync(note);
+                await _context.PersonNotes
+                    .AddAsync(note);
             }
 
             await _context.SaveChangesAsync();
 
             TempData["Success"] =
-                "Kişi güncellendi!";
+                "Kişi başarıyla güncellendi!";
 
             return RedirectToAction(nameof(PersonList));
         }

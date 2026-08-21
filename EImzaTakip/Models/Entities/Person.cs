@@ -48,7 +48,7 @@ namespace EImzaTakip.Models.Entities
 
         [Display(Name = "Açıklama")]
         [DataType(DataType.MultilineText)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Display(Name = "VIP")]
         public bool VIP { get; set; }
