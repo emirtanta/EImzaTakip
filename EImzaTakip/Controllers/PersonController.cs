@@ -215,10 +215,10 @@ namespace EImzaTakip.Controllers
                 );
             }
 
-            if (!ModelState.IsValid)
-            {
-                return View(dto);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(dto);
+            //}
 
             var person = await _context.Persons
                 .Include(x => x.Certificates)

@@ -23,7 +23,7 @@
         <div class="card-body">
 
             <form asp-action="PersonUpdate"
-                  method="post">
+                  method="post" autocomplete="off">
 
                 <div asp-validation-summary="All"
                      class="text-danger mb-3">
@@ -395,86 +395,98 @@
 
     <script>
 
+        // Mevcut sertifika sayısı
         let certificateIndex =
-            @Model.Certificates.Count;
+        @Model.Certificates.Count;
 
+        // Mevcut not sayısı
         let noteIndex =
-            @Model.PersonNotes.Count;
+        @Model.PersonNotes.Count;
 
-        // ADD CERTIFICATE
+        // Dinamik eklenen sertifikalarda kullanılacak bugünün tarihi
+        const today =
+            '@DateTime.Today.ToString("yyyy-MM-dd")';
+
+
+        // ============================================
+        // SERTİFİKA EKLE
+        // ============================================
         $('#addCertificateBtn').click(function () {
 
             let html = `
-                <div class="card mb-3 certificate-item">
+                        <div class="card mb-3 certificate-item">
 
-                    <div class="card-body">
+                            <div class="card-body">
 
-                        <button type="button"
-                                class="btn btn-danger btn-sm float-right removeCertificateBtn">
-                            Sil
-                        </button>
+                                <button type="button"
+                                        class="btn btn-danger btn-sm float-right removeCertificateBtn">
+                                    Sil
+                                </button>
 
-                        <div class="form-group mb-2">
+                                <div class="form-group mb-2">
 
-                            <label>
-                                Sertifika Türü
-                            </label>
+                                    <label>
+                                        Sertifika Türü
+                                    </label>
 
-                            <select name="Certificates[${certificateIndex}].CertificateName"
-                                    class="form-control certificate-name">
+                                    <select name="Certificates[${certificateIndex}].CertificateName"
+                                            class="form-control certificate-name">
 
-                                <option value="">
-                                    Sertifika Türü Seçiniz
-                                </option>
+                                        <option value="">
+                                            Sertifika Türü Seçiniz
+                                        </option>
 
-                                <option value="NES">
-                                    NES
-                                </option>
+                                        <option value="NES">
+                                            NES
+                                        </option>
 
-                                <option value="Mobil NES">
-                                    Mobil NES
-                                </option>
+                                        <option value="Mobil NES">
+                                            Mobil NES
+                                        </option>
 
-                            </select>
+                                    </select>
 
-                        </div>
+                                </div>
 
-                        <div class="form-group mb-2">
+                                <div class="form-group mb-2">
 
-                            <label>
-                                Başlangıç Tarihi
-                            </label>
+                                    <label>
+                                        Başlangıç Tarihi
+                                    </label>
 
-                            <input type="date"
-                                   name="Certificates[${certificateIndex}].StartDate"
-                                   value="${today}"
-                                   class="form-control" />
+                                    <input type="date"
+                                           name="Certificates[${certificateIndex}].StartDate"
+                                           value="${today}"
+                                           class="form-control" />
 
-                        </div>
+                                </div>
 
-                        <div class="form-group">
+                                <div class="form-group">
 
-                            <label>
-                                Bitiş Tarihi
-                            </label>
+                                    <label>
+                                        Bitiş Tarihi
+                                    </label>
 
-                            <input type="date"
-                                   name="Certificates[${certificateIndex}].ExpirationDate"
-                                   value="${today}"
-                                   class="form-control" />
+                                    <input type="date"
+                                           name="Certificates[${certificateIndex}].ExpirationDate"
+                                           value="${today}"
+                                           class="form-control" />
 
-                        </div>
+                                </div>
 
-                    </div>
+                            </div>
 
-                </div>`;
+                        </div>`;
 
             $('#certificateContainer').append(html);
 
             certificateIndex++;
         });
 
-        // REMOVE CERTIFICATE
+
+        // ============================================
+        // SERTİFİKA SİL
+        // ============================================
         $(document).on(
             'click',
             '.removeCertificateBtn',
@@ -485,42 +497,46 @@
                     .remove();
             });
 
-        // ADD NOTE
+
+        // ============================================
+        // NOT EKLE
+        // ============================================
         $('#addNoteBtn').click(function () {
 
             let html = `
-            <div class="card mb-3 note-item">
+                        <div class="card mb-3 note-item">
 
-                <div class="card-body">
+                            <div class="card-body">
 
-                    <button type="button"
-                            class="btn btn-danger btn-sm float-right removeNoteBtn">
+                                <button type="button"
+                                        class="btn btn-danger btn-sm float-right removeNoteBtn">
+                                    Sil
+                                </button>
 
-                        Sil
+                                <div class="form-group">
 
-                    </button>
+                                    <label>
+                                        Not
+                                    </label>
 
-                    <div class="form-group">
+                                    <textarea name="PersonNotes[${noteIndex}].Description"
+                                              class="form-control"></textarea>
 
-                        <label>
-                            Not
-                        </label>
+                                </div>
 
-                        <textarea name="PersonNotes[${noteIndex}].Description"
-                                  class="form-control"></textarea>
+                            </div>
 
-                    </div>
-
-                </div>
-
-            </div>`;
+                        </div>`;
 
             $('#noteContainer').append(html);
 
             noteIndex++;
         });
 
-        // REMOVE NOTE
+
+        // ============================================
+        // NOT SİL
+        // ============================================
         $(document).on(
             'click',
             '.removeNoteBtn',
@@ -531,7 +547,11 @@
                     .remove();
             });
 
-        // INDEX RESET
+
+        // ============================================
+        // FORM SUBMIT
+        // COLLECTION INDEXLERİNİ YENİDEN DÜZENLE
+        // ============================================
         $('form').submit(function () {
 
             // CERTIFICATE INDEX RESET
@@ -561,6 +581,7 @@
                         });
 
                 });
+
 
             // NOTE INDEX RESET
             $('#noteContainer .note-item')
